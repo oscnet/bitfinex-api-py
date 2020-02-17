@@ -38,7 +38,7 @@ class BfxRest:
         @return reponse
         """
         url = '{}/{}{}'.format(self.host, endpoint, params)
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(trust_env=True) as session:
             async with session.get(url) as resp:
                 text = await resp.text()
                 if resp.status != 200:
@@ -58,7 +58,7 @@ class BfxRest:
         headers = generate_auth_headers(
             self.API_KEY, self.API_SECRET, endpoint, sData)
         headers["content-type"] = "application/json"
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(trust_env=True) as session:
             async with session.post(url + params, headers=headers, data=sData) as resp:
                 text = await resp.text()
                 if resp.status < 200 or resp.status > 299:
